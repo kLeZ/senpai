@@ -1,27 +1,203 @@
-# senpai
+# Senpai - Your Gentle Code Reviewer
 
 ![Build](https://github.com/kLeZ/senpai/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/21038.svg)](https://plugins.jetbrains.com/plugin/21038)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/21038.svg)](https://plugins.jetbrains.com/plugin/21038)
 
 ## Template ToDo list
 - [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Verify the [pluginGroup](./gradle.properties), [plugin ID](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the Plugin ID in the above README badges.
+- [x] Get familiar with the [template documentation][template].
+- [x] Verify the [pluginGroup](./gradle.properties), [plugin ID](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
+- [x] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
+- [x] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
+- [x] Set the Plugin ID in the above README badges.
 - [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
 - [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
+- [x] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+This plugin has been developed to ease the work of software engineer courses' assistants that are in charge of going through tons of source files in order to provide feedback and advices to students. With this plugin, you will be able to attach comments to specific piece of code and/or general remarks about the entire project along with producing a simple and good-looking static html report ready to be handed.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
-
-To keep everything working, do not remove `<!-- ... -->` sections. 
+Hard fork of the stale plugin [Sensei](https://github.com/SamuelCabralCruz/sensei).
 <!-- Plugin description end -->
+
+## List of features
+
+- Available for all [Jetbrains IDEs](https://www.jetbrains.com/products.html#type=ide).
+- Support all languages.
+
+## Limitations
+
+- Report highlighting might not work if language fall of this list.
+- Line markers in the IDE might be misplaced depending on the granularity of the PSI elements.
+
+## Code Highlighting
+
+- We use [prism](https://prismjs.com) in order to highlight code snippets.
+- In order to update the scripts (`prism.css` and `prism.js`), simply go to the following [page](https://prismjs.com/download).
+  - Here are the options we currently use:
+    - Compression: Minified version
+    - Theme: Coy
+    - Languages: All
+    - Plugins:
+      - Line Highlight
+      - Line Numbers
+      - Normalize whitespace
+      - Toolbar
+      - Copy to Clipboard Button
+- We also customize the exported stylesheet.
+  - Remove the pseudo-elements on the pre tag
+      ```css
+      pre[class*="language-"]:before,
+      pre[class*="language-"]:after {
+          content: '';
+          z-index: -2;
+          display: block;
+          position: absolute;
+          bottom: 0.75em;
+          left: 0.18em;
+          width: 40%;
+          height: 20%;
+          max-height: 13em;
+          box-shadow: 0px 13px 8px #979797;
+          -webkit-transform: rotate(-2deg);
+          -moz-transform: rotate(-2deg);
+          -ms-transform: rotate(-2deg);
+          -o-transform: rotate(-2deg);
+          transform: rotate(-2deg);
+      }
+      ```
+  - Remove line highlight gradient
+      ```css
+      .line-highlight {
+          background: linear-gradient(to right, hsla(201, 100%, 50%, .1) 70%, hsla(201, 100%, 50%, 0));
+      }
+      ```
+  - Modify the line highlighting color
+      ```css
+      .line-highlight {
+          ...
+          background: hsla(201, 100%, 50%, .08);
+          ...
+      }
+      
+      .line-highlight:before,
+      .line-highlight[data-end]:after {
+          ...
+          background-color: hsla(201, 100%, 50%, 1);
+          color: hsl(201, 100%, 95%);
+          ...
+      }
+      ```
+  - Remove vertical separator
+      ```css
+      pre[class*="language-"] > code {
+          ...
+          border-left: 10px solid #358ccb;
+          box-shadow: -1px 0px 0px 0px #358ccb, 0px 0px 0px 1px #dfdfdf;
+          ...
+      }
+      ``` 
+  - Remove alternate line background
+      ```css
+      pre[class*="language-"] > code {
+          ...
+          background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
+          background-size: 3em 3em;
+          background-origin: content-box;
+          background-attachment: local;
+          ...
+      }
+      ```
+  - Remove right padding
+      ```css
+      code[class*="language"] {
+          ...
+          padding: 0 1em;
+          ...
+      }
+      ```
+  - Remove margin pre tag
+      ```css
+      pre[class*="language-"] {
+          ...
+          margin: 0;
+          ...
+      }
+    
+      /* Margin bottom to accommodate shadow */
+      :not(pre) > code[class*="language-"],
+      pre[class*="language-"] {
+          background-color: #fdfdfd;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          margin-bottom: 1em;
+      }
+      ```
+  - Modify code background color
+      ```css
+      pre[class*="language-"] > code {
+          ... 
+          background-color: #ededed;
+          ...
+      }
+     ```
+  - Remove tokens background color
+      ```css
+      .token.operator,
+      .token.entity,
+      .token.url,
+      .token.variable {
+          ...
+          background: rgba(255, 255, 255, 0.5);
+          ...
+      }
+      
+      .language-css .token.string,
+      .style .token.string {
+          ...
+          background: rgba(255, 255, 255, 0.5);
+          ...
+      }
+      ```
+  - Remove inline code related styling
+      ```css
+      /* Inline code */
+      :not(pre) > code[class*="language-"] {
+          position: relative;
+          padding: .2em;
+          border-radius: 0.3em;
+          color: #c92c2c;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          display: inline;
+          white-space: normal;
+      }
+      
+      :not(pre) > code[class*="language-"]:after,
+      pre[class*="language-"]:after {
+          right: 0.75em;
+          left: auto;
+          -webkit-transform: rotate(2deg);
+          -moz-transform: rotate(2deg);
+          -ms-transform: rotate(2deg);
+          -o-transform: rotate(2deg);
+          transform: rotate(2deg);
+      }
+      ```
+  - Hide overflow code block
+      ```css
+      code[class*="language"] {
+          ...
+          overflow: hidden;
+      }
+      ```
+
+## JQuery
+
+In order to use JQuery, we have to [download](https://code.jquery.com/jquery/) a minified version.
+We are currently using the version [`jQuery Core 3.4.1`](https://code.jquery.com/jquery-3.4.1.min.js).
+There was a mention to include `integrity` and `crossorigin` attributes to the script tag, but we did not.
 
 ## Installation
 

@@ -1,18 +1,30 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>me.klez.senpai</id>
-    <name>Senpai - Your Fellow Code Reviewer</name>
-    <vendor>klez</vendor>
-
-    <depends>com.intellij.modules.platform</depends>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="me.klez.senpai.services.MyApplicationService"/>
-        <projectService serviceImplementation="me.klez.senpai.services.MyProjectService"/>
-    </extensions>
-
-    <applicationListeners>
-        <listener class="me.klez.senpai.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+	<id>me.klez.senpai</id>
+	<name>Senpai - Your Gentle Code Reviewer</name>
+	<vendor email="klez@protonmail.com" url="https://klez.me">Alessandro 'kLeZ' Accardo</vendor>
+	<depends>com.intellij.modules.platform</depends>
+	<extensions defaultExtensionNs="com.intellij">
+		<codeInsight.lineMarkerProvider language="" implementationClass="me.klez.senpai.view.lineMarker.RunnableLineMarkerProvider" />
+		<projectService serviceImplementation="me.klez.senpai.persistence.ReviewPersistence" />
+	</extensions>
+	<actions>
+		<group id="senpai.actions" text="Senpai">
+			<add-to-group group-id="MainMenu" anchor="last" />
+			<action class="me.klez.senpai.action.review.CreateReviewAction" id="senpai.actions.createReview" text="Create Review" />
+			<action class="me.klez.senpai.action.comment.general.AddGeneralCommentAction" id="senpai.actions.addGeneralComment" text="Add General Comment">
+				<keyboard-shortcut first-keystroke="altGraph F4" keymap="$default" replace-all="true" />
+			</action>
+			<action class="me.klez.senpai.action.comment.general.ManageGeneralCommentsAction" id="senpai.actions.manageGeneralComments" text="Manage General Comments" />
+			<action class="me.klez.senpai.action.comment.file.AddFileCommentAction" id="senpai.actions.addFileComment" text="Add File Comment">
+				<keyboard-shortcut first-keystroke="altGraph F5" keymap="$default" replace-all="true" />
+			</action>
+			<action class="me.klez.senpai.action.report.GenerateReportAction" id="senpai.actions.generateReport" text="Generate Report">
+				<keyboard-shortcut first-keystroke="altGraph F6" keymap="$default" replace-all="true" />
+			</action>
+			<action class="me.klez.senpai.action.review.CloseReviewAction" id="senpai.actions.closeReview" text="Close Review" />
+			<action class="me.klez.senpai.action.review.ReopenReviewAction" id="senpai.actions.reopenReview" text="Reopen Review" />
+			<action class="me.klez.senpai.action.review.DeleteReviewAction" id="senpai.actions.deleteReview" text="Delete Review" />
+		</group>
+	</actions>
 </idea-plugin>

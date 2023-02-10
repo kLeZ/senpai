@@ -1,0 +1,216 @@
+body {
+    font-family: 'robotoregular';
+    font-weight: normal;
+    font-style: normal;
+}
+
+.layout {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* Remove scroll bars */
+.comments-panel, .snippets-panel {
+    overflow-y: auto;
+    /* FireFox */
+    scrollbar-width: none;
+    /* IE10+ */
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.comments-panel::-webkit-scrollbar, .snippets-panel::-webkit-scrollbar {
+    /* Chrome, Safari, Edge */
+    display: none;
+}
+
+.comments-panel {
+    padding: 1em 2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.comments-panel-header {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    padding: 1em 0;
+}
+
+.comments-panel-header-title {
+    font-weight: bold;
+    font-size: 2.5rem;
+    align-self: center;
+}
+
+.comments-panel-header-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 0;
+}
+
+.comments-panel-header-details > * {
+    font-size: medium;
+    font-weight: bold;
+    text-align: end;
+    align-self: center;
+}
+
+.general-comments,
+.files-comments {
+    padding: 1em 0;
+}
+
+.general-comments-title,
+.files-comments-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+    align-self: center;
+}
+
+.general-comments-content,
+.files-comments-content {
+    padding-left: 1.5em;
+}
+
+.files-comments-content {
+    padding-top: 1em;
+}
+
+.file-comments-summary {
+    word-wrap: break-word;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    font-size: medium;
+    font-weight: bold;
+    padding: 0.5em 0;
+}
+
+.file-comments-summary::marker {
+    font-size: larger;
+}
+
+.file-comments-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-left: 1em;
+}
+
+.senpai-comment {
+    display: grid;
+    grid-template-rows: auto auto;
+    position: relative;
+    padding: 0.5em;
+    margin: 0.5em 0;
+}
+
+.senpai-comment:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 0.5em;
+    border: 2px solid transparent;
+    background-color: hsla(201, 100%, 50%, .1);
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.senpai-comment:hover:after {
+    opacity: 1;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.comment-header,
+.comment-body {
+    display: grid;
+    grid-template-columns: 2em 1fr;
+}
+
+.comment-header-logo {
+    width: 100%;
+    align-self: center;
+}
+
+.comment-header-label {
+    align-self: center;
+}
+
+.comment-body-content {
+    grid-row: 1;
+    grid-column: 2;
+}
+
+.snippets-panel {
+    background-color: #ededed;
+}
+
+.snippets-panel-empty-state-layout {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F92C64;
+    overflow: hidden;
+}
+
+.snippets-panel-empty-state {
+    flex: 1;
+    padding: 25%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 1em;
+}
+
+.snippets-panel-empty-state-image {
+    width: 100%;
+}
+
+.snippets-panel-empty-state-quote,
+.snippets-panel-empty-state-quote-author {
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+}
+
+.snippets-panel-empty-state-quote-author {
+    font-style: italic;
+}
+
+.snippet {
+    display: none;
+}
+
+.copyright {
+    width: 100%;
+    font-size: 0.85rem;
+    padding-top: 4em;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1024px) {
+    .snippets-panel {
+        display: none;
+    }
+
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media only screen and (max-height: 700px) {
+    .snippets-panel-empty-state-image {
+        display: none;
+    }
+}
