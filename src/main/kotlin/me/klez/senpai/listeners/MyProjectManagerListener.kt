@@ -1,9 +1,9 @@
-package com.github.klez.senpai.listeners
+package me.klez.senpai.listeners
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
-import com.github.klez.senpai.services.MyProjectService
+import me.klez.senpai.services.MyProjectService
 
 internal class MyProjectManagerListener : ProjectManagerListener {
 

@@ -1,18 +1,18 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.klez.senpai</id>
-    <name>IntelliJ Platform Plugin senpai</name>
+    <id>me.klez.senpai</id>
+    <name>Senpai - Your Fellow Code Reviewer</name>
     <vendor>klez</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.klez.senpai.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.klez.senpai.services.MyProjectService"/>
+        <applicationService serviceImplementation="me.klez.senpai.services.MyApplicationService"/>
+        <projectService serviceImplementation="me.klez.senpai.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.klez.senpai.listeners.MyProjectManagerListener"
+        <listener class="me.klez.senpai.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>

@@ -1,6 +1,6 @@
-package com.github.klez.senpai.services
+package me.klez.senpai.services
 
-import com.github.klez.senpai.MyBundle
+import me.klez.senpai.MyBundle
 
 class MyApplicationService {
 

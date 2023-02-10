@@ -1,4 +1,4 @@
-package com.github.klez.senpai
+package me.klez.senpai
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
