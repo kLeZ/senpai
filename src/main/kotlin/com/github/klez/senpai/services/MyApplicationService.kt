@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.klez.senpai.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.klez.senpai.MyBundle
 
 class MyApplicationService {
 
