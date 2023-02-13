@@ -1,9 +1,9 @@
 package me.klez.senpai.model.review
 
+import com.intellij.openapi.project.Project
 import me.klez.senpai.model.review.comment.ReviewFileComment
 import me.klez.senpai.model.review.comment.ReviewGeneralComment
 import me.klez.senpai.report.ReportGenerator
-import com.intellij.openapi.project.Project
 import me.klez.senpai.report.file.comparator.GroupSourceAndTestFilesPathComparator
 
 class Review {
@@ -109,6 +109,6 @@ class Review {
     }
 
     fun generateReport(outputPath: String) {
-        ReportGenerator().generate(this, outputPath)
+        ReportGenerator().generateTL(this, outputPath)
     }
 }
