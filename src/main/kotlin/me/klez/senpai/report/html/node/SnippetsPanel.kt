@@ -36,7 +36,7 @@ class SnippetsPanel(private val review: Review) : HtmlNode() {
     private fun appendEmptyStateQuote(buffer: HtmlBuffer) {
         buffer.append("<div class='snippets-panel-empty-state-quote'>")
         buffer.increaseIndent()
-        buffer.append("Be respectful of your Senpai.")
+        buffer.append("Notice Me Senpai.")
         buffer.decreaseIndent()
         buffer.append("</div>")
     }
@@ -44,7 +44,7 @@ class SnippetsPanel(private val review: Review) : HtmlNode() {
     private fun appendEmptyStateQuoteAuthor(buffer: HtmlBuffer) {
         buffer.append("<div class='snippets-panel-empty-state-quote-author'>")
         buffer.increaseIndent()
-        buffer.append("- Fumio Demura -")
+        buffer.append("- People on deviantArt -")
         buffer.decreaseIndent()
         buffer.append("</div>")
     }

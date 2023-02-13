@@ -8,6 +8,7 @@ import me.klez.senpai.report.html.HtmlBuffer
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME
+import java.util.*
 
 class CommentsPanel(private val review: Review) : HtmlNode() {
     override fun openTag(buffer: HtmlBuffer) {
@@ -31,7 +32,7 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
     private fun appendCommentsPanelHeaderTitle(buffer: HtmlBuffer) {
         buffer.append("<div class='comments-panel-header-title'>")
         buffer.increaseIndent()
-        buffer.append(review.details.evaluationName!!.capitalize())
+        buffer.append(review.details.evaluationName!!.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })
         buffer.decreaseIndent()
         buffer.append("</div>")
     }
@@ -73,7 +74,7 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
         buffer.append("<div class='files-comments-title'>Specific Comments</div>")
         buffer.append("<div class='files-comments-content'>")
         buffer.increaseIndent()
-        review.filesComments.toSortedMap(GroupSourceAndTestFilesPathComparator()).forEach(fun(fileName, fileComments) {
+        review.filesComments.forEach(fun(fileName, fileComments) {
             appendFileComments(buffer, fileName, fileComments)
         })
         buffer.decreaseIndent()
@@ -182,7 +183,7 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
         buffer.append("<div class='comment-body-content-tags'>")
         buffer.increaseIndent()
         tags.forEach(fun(tag) {
-            val tagClassName = tag.value.toLowerCase().split(" ").joinToString("-")
+            val tagClassName = tag.value.lowercase(Locale.getDefault()).split(" ").joinToString("-")
             buffer.append("<span class='badge $tagClassName'>${tag.value}</span>")
         })
         buffer.decreaseIndent()
@@ -202,7 +203,7 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
         buffer.append("<div class='copyright'>")
         buffer.increaseIndent()
         val timestamp = RFC_1123_DATE_TIME.withZone(ZoneOffset.UTC).format(Instant.now())
-        buffer.append("Generated with <b>&nbsp;&copy;SenpaiCodeReviews&nbsp;</b> on $timestamp")
+        buffer.append("Generated with <b>&copy; Senpai - Code Reviews</b> on $timestamp")
         buffer.decreaseIndent()
         buffer.append("</div>")
     }
