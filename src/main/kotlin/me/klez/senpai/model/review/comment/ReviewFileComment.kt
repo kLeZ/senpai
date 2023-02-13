@@ -9,7 +9,13 @@ class ReviewFileComment() : ReviewComment() {
     var highlightStartingLine = 0
     var highlightEndingLine = 0
     var codeSnippet = ""
-	val brush: String = FileExtension.fromExtension(extractPathStructure(filePath).extension).brush
+	val brush: String
+		get() {
+			return when {
+				filePath.isNotBlank() -> FileExtension.fromExtension(extractPathStructure(filePath).extension).brush
+				else -> ""
+			}
+		}
 
     constructor(
         _filePath: String,
