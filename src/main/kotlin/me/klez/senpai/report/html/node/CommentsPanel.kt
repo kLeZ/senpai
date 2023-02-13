@@ -89,7 +89,7 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
         fileName: String,
         fileComments: MutableList<ReviewFileComment>
     ) {
-        buffer.append("<details key='$fileName' class='file-comments'>")
+        buffer.append("<details data-key='$fileName' class='file-comments'>")
         buffer.increaseIndent()
         buffer.append("<summary class='file-comments-summary'>$fileName</summary>")
         buffer.append("<div class='file-comments-details'>")
@@ -113,7 +113,7 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
     }
 
     private fun appendComment(buffer: HtmlBuffer, index: Int, comment: ReviewComment, cssClass: String) {
-        buffer.append("<div key='${comment.hashCode()}-$index' class='senpai-comment $cssClass'>")
+        buffer.append("<div data-key='${comment.hashCode()}-$index' class='senpai-comment $cssClass'>")
         buffer.increaseIndent()
         appendCommentHeader(buffer, comment)
         appendCommentBody(buffer, comment)

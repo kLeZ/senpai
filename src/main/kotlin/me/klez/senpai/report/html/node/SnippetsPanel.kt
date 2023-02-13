@@ -63,7 +63,7 @@ class SnippetsPanel(private val review: Review) : HtmlNode() {
     }
 
     private fun appendSnippet(buffer: HtmlBuffer, index: Int, fileComment: ReviewFileComment) {
-        buffer.append("<div key='${fileComment.hashCode()}-$index' class='snippet'>")
+        buffer.append("<div data-key='${fileComment.hashCode()}-$index' class='snippet'>")
         buffer.increaseIndent()
         buffer.append("<pre ${getPreProps(fileComment)}><code class='language-${getBrush(fileComment.filePath)}'>")
         buffer.increaseIndent()

@@ -14,7 +14,7 @@ function triggerWindowResize() {
 
 function showCodeSnippet(key) {
     emptyState.hide();
-    const correspondingCodeSnippet = $('div.snippets').find(`[key=${key}]`);
+    const correspondingCodeSnippet = $('div.snippets').find(`[data-key=${key}]`);
     if (displayedSnippet !== correspondingCodeSnippet) {
         if (displayedSnippet != null) displayedSnippet.hide();
         correspondingCodeSnippet.show();
@@ -40,7 +40,7 @@ $(document).ready(function () {
     });
     $('div.file-comment').each(function () {
         $(this).hover(function () {
-            showCodeSnippet($(this).attr('key'))
+            showCodeSnippet($(this).data('key'))
         }, noop)
     });
     $('div.copyright').hover(hideCodeSnippet, noop);
