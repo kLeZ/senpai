@@ -31,11 +31,19 @@ dependencies {
 	implementation("org.thymeleaf:thymeleaf:3.1.1.RELEASE")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE")
 	testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+	testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
+	testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.1")
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
 kotlin {
 	jvmToolchain(11)
+}
+
+tasks.withType<Test> {
+	useJUnitPlatform()
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
