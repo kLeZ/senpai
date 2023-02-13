@@ -48,13 +48,13 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
     }
 
     private fun appendGeneralComments(buffer: HtmlBuffer) {
-        if (review.generalComments.isEmpty()) return
+        if (!review.hasGeneralComments()) return
         buffer.append("<div class='general-comments'>")
         buffer.increaseIndent()
         buffer.append("<div class='general-comments-title'>General Comments</div>")
         buffer.append("<div class='general-comments-content'>")
         buffer.increaseIndent()
-        review.generalComments.forEachIndexed(fun(index, generalComment) {
+        review.sortedGeneralComments().forEachIndexed(fun(index, generalComment) {
             appendGeneralComment(buffer, index, generalComment)
         })
         buffer.decreaseIndent()
@@ -68,13 +68,13 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
     }
 
     private fun appendFilesComments(buffer: HtmlBuffer) {
-        if (review.filesComments.isEmpty()) return
+        if (!review.hasFileComments()) return
         buffer.append("<div class='files-comments'>")
         buffer.increaseIndent()
         buffer.append("<div class='files-comments-title'>Specific Comments</div>")
         buffer.append("<div class='files-comments-content'>")
         buffer.increaseIndent()
-        review.filesComments.forEach(fun(fileName, fileComments) {
+        review.sortedFilesComments().forEach(fun(fileName, fileComments) {
             appendFileComments(buffer, fileName, fileComments)
         })
         buffer.decreaseIndent()

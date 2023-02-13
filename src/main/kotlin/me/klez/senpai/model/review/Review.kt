@@ -11,10 +11,15 @@ class Review {
     var projectBasePath: String? = null
     var details = ReviewDetails()
     var generalComments = mutableListOf<ReviewGeneralComment>()
-        get() = field.sortedBy { it.details.label }.toMutableList()
+	var filesComments = mutableMapOf<String, MutableList<ReviewFileComment>>()
 
-    var filesComments = mutableMapOf<String, MutableList<ReviewFileComment>>()
-        get() = field.toSortedMap(GroupSourceAndTestFilesPathComparator()).onEach { (_, v) -> v.sortBy { it.startingLine } }
+	fun sortedGeneralComments(): MutableList<ReviewGeneralComment> {
+		return generalComments.sortedBy { it.details.label }.toMutableList()
+	}
+
+	fun sortedFilesComments(): MutableMap<String, MutableList<ReviewFileComment>> {
+		return filesComments.toSortedMap(GroupSourceAndTestFilesPathComparator()).onEach { (_, v) -> v.sortBy { it.startingLine } }
+	}
 
     fun isCreated(): Boolean {
         return status != null

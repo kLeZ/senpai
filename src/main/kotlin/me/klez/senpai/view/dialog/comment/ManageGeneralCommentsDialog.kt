@@ -33,8 +33,7 @@ class ManageGeneralCommentsDialog(private val review: Review) :
     override fun createCenterPanel(): JComponent? {
         val panel = Panel()
         val gb = panel.gridBag
-        review.generalComments.sortBy { it.details.label }
-        review.generalComments.forEach(fun(comment) {
+        review.sortedGeneralComments().forEach(fun(comment) {
             val titledPanel = HideableTitledPanel(comment.details.label, null, false)
             val subPanel = generateGeneralCommentComponent(review, comment, titledPanel, panel)
             titledPanel.setContentComponent(subPanel)
