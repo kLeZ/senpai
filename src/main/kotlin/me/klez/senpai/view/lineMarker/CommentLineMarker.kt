@@ -12,35 +12,35 @@ import com.intellij.psi.PsiElement
 import com.intellij.util.Function
 
 class CommentLineMarker(
-    element: PsiElement,
-    tooltipProvider: Function<PsiElement, String>,
-    private val actionGroup: DefaultActionGroup
+	element: PsiElement,
+	tooltipProvider: Function<PsiElement, String>,
+	private val actionGroup: DefaultActionGroup
 ) :
-    LineMarkerInfo<PsiElement>(
-        element,
-        element.textRange,
-        AllIcons.Nodes.Target,
-        tooltipProvider,
-        null,
-        GutterIconRenderer.Alignment.CENTER
-    ) {
-    override fun createGutterRenderer(): GutterIconRenderer? {
-        return object : LineMarkerGutterIconRenderer<PsiElement>(this) {
-            override fun getClickAction(): AnAction? {
-                return null
-            }
+	LineMarkerInfo<PsiElement>(
+		element,
+		element.textRange,
+		AllIcons.Nodes.Target,
+		tooltipProvider,
+		null,
+		GutterIconRenderer.Alignment.CENTER
+	) {
+	override fun createGutterRenderer(): GutterIconRenderer? {
+		return object : LineMarkerGutterIconRenderer<PsiElement>(this) {
+			override fun getClickAction(): AnAction? {
+				return null
+			}
 
-            override fun isNavigateAction(): Boolean {
-                return true
-            }
+			override fun isNavigateAction(): Boolean {
+				return true
+			}
 
-            override fun getPopupMenuActions(): ActionGroup? {
-                return actionGroup
-            }
-        }
-    }
+			override fun getPopupMenuActions(): ActionGroup? {
+				return actionGroup
+			}
+		}
+	}
 
-    override fun getEditorFilter(): MarkupEditorFilter {
-        return MarkupEditorFilterFactory.createIsNotDiffFilter()
-    }
+	override fun getEditorFilter(): MarkupEditorFilter {
+		return MarkupEditorFilterFactory.createIsNotDiffFilter()
+	}
 }

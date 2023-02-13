@@ -12,39 +12,39 @@ import org.thymeleaf.templatemode.TemplateMode
 import java.io.File
 
 class ReportGenerator {
-    fun generateTL(review: Review, outputPath: String) {
-        setUpOutputDirectory(outputPath)
-        prepareAssets(outputPath)
-        val engine = GenericTemplateEngine(TemplateMode.HTML)
-        val indexContents: String = engine.getTemplate("index.html", mapOf(Pair("review",  review)))
-        File("$outputPath/index.html").writeText(indexContents)
-    }
+	fun generateTL(review: Review, outputPath: String) {
+		setUpOutputDirectory(outputPath)
+		prepareAssets(outputPath)
+		val engine = GenericTemplateEngine(TemplateMode.HTML)
+		val indexContents: String = engine.getTemplate("index.html", mapOf(Pair("review", review)))
+		File("$outputPath/index.html").writeText(indexContents)
+	}
 
-    fun generate(review: Review, outputPath: String) {
-        setUpOutputDirectory(outputPath)
-        prepareAssets(outputPath)
-        val htmlBuffer = HtmlBuffer()
-        Root()
-            .addChild(Headers())
-            .addChild(
-                Body()
-                    .addChild(CommentsPanel(review))
-                    .addChild(SnippetsPanel(review))
-            ).output(htmlBuffer)
-        htmlBuffer.saveToFile("$outputPath/index.html")
-    }
+	fun generate(review: Review, outputPath: String) {
+		setUpOutputDirectory(outputPath)
+		prepareAssets(outputPath)
+		val htmlBuffer = HtmlBuffer()
+		Root()
+			.addChild(Headers())
+			.addChild(
+				Body()
+					.addChild(CommentsPanel(review))
+					.addChild(SnippetsPanel(review))
+			).output(htmlBuffer)
+		htmlBuffer.saveToFile("$outputPath/index.html")
+	}
 
-    private fun setUpOutputDirectory(path: String) {
-        deleteDirectory(path)
-        createDirectories(path)
-    }
+	private fun setUpOutputDirectory(path: String) {
+		deleteDirectory(path)
+		createDirectories(path)
+	}
 
-    private fun prepareAssets(path: String) {
-        copyResourcesRecursively(
-            this.javaClass.classLoader,
-            "assets",
-            path
-        )
-        replaceInFile("$path/assets/css/fonts.css", "<projectBasePath>", path)
-    }
+	private fun prepareAssets(path: String) {
+		copyResourcesRecursively(
+			this.javaClass.classLoader,
+			"assets",
+			path
+		)
+		replaceInFile("$path/assets/css/fonts.css", "<projectBasePath>", path)
+	}
 }
