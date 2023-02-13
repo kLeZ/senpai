@@ -53,7 +53,6 @@ class SnippetsPanel(private val review: Review) : HtmlNode() {
         buffer.append("<div class='snippets'>")
         buffer.increaseIndent()
         review.filesComments.forEach(fun(_, fileComments) {
-            fileComments.sortBy { it.startingLine }
             fileComments.forEachIndexed(fun(index, fileComment) {
                 appendSnippet(buffer, index, fileComment)
             })

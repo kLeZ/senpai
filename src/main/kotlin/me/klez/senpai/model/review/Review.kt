@@ -4,13 +4,17 @@ import me.klez.senpai.model.review.comment.ReviewFileComment
 import me.klez.senpai.model.review.comment.ReviewGeneralComment
 import me.klez.senpai.report.ReportGenerator
 import com.intellij.openapi.project.Project
+import me.klez.senpai.report.file.comparator.GroupSourceAndTestFilesPathComparator
 
 class Review {
     var status: ReviewStatus? = null
     var projectBasePath: String? = null
     var details = ReviewDetails()
     var generalComments = mutableListOf<ReviewGeneralComment>()
+        get() = field.sortedBy { it.details.label }.toMutableList()
+
     var filesComments = mutableMapOf<String, MutableList<ReviewFileComment>>()
+        get() = field.toSortedMap(GroupSourceAndTestFilesPathComparator()).onEach { (_, v) -> v.sortBy { it.startingLine } }
 
     fun isCreated(): Boolean {
         return status != null

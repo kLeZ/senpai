@@ -4,7 +4,6 @@ import me.klez.senpai.model.review.Review
 import me.klez.senpai.model.review.comment.ReviewComment
 import me.klez.senpai.model.review.comment.ReviewFileComment
 import me.klez.senpai.model.review.comment.ReviewGeneralComment
-import me.klez.senpai.report.file.comparator.GroupSourceAndTestFilesPathComparator
 import me.klez.senpai.report.html.HtmlBuffer
 import java.time.Instant
 import java.time.ZoneOffset
@@ -54,7 +53,6 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
         buffer.append("<div class='general-comments-title'>General Comments</div>")
         buffer.append("<div class='general-comments-content'>")
         buffer.increaseIndent()
-        review.generalComments.sortBy { it.details.label }
         review.generalComments.forEachIndexed(fun(index, generalComment) {
             appendGeneralComment(buffer, index, generalComment)
         })
