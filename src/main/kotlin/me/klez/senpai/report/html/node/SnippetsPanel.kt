@@ -64,7 +64,7 @@ class SnippetsPanel(private val review: Review) : HtmlNode() {
     private fun appendSnippet(buffer: HtmlBuffer, index: Int, fileComment: ReviewFileComment) {
         buffer.append("<div data-key='${fileComment.hashCode()}-$index' class='snippet'>")
         buffer.increaseIndent()
-        buffer.append("<pre ${getPreProps(fileComment)}><code class='language-${getBrush(fileComment.filePath)}'>")
+        buffer.append("<pre ${getPreProps(fileComment)}><code class='language-${fileComment.brush}'>")
         buffer.increaseIndent()
         buffer.appendWithoutIndent(StringEscapeUtils.escapeHtml4(fileComment.codeSnippet))
         buffer.decreaseIndent()
@@ -83,9 +83,6 @@ class SnippetsPanel(private val review: Review) : HtmlNode() {
         otherAttributes.add("style='white-space:pre-wrap;'")
         return otherAttributes.joinToString(" ")
     }
-
-    private fun getBrush(filePath: String): String =
-        FileExtension.fromExtension(extractPathStructure(filePath).extension).brush
 
     override fun closeTag(buffer: HtmlBuffer) {
         buffer.decreaseIndent()

@@ -1,11 +1,15 @@
 package me.klez.senpai.model.review.comment
 
+import me.klez.senpai.report.file.FileExtension
+import me.klez.senpai.report.file.extractPathStructure
+
 class ReviewFileComment() : ReviewComment() {
     var filePath = ""
     var startingLine = 0
     var highlightStartingLine = 0
     var highlightEndingLine = 0
     var codeSnippet = ""
+	val brush: String = FileExtension.fromExtension(extractPathStructure(filePath).extension).brush
 
     constructor(
         _filePath: String,
