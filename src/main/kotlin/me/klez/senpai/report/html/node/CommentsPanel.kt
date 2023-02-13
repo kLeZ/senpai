@@ -166,19 +166,13 @@ class CommentsPanel(private val review: Review) : HtmlNode() {
         buffer: HtmlBuffer,
         comment: ReviewComment
     ) {
-        if (isCommentWithoutContent(comment)) return
+        if (comment.empty) return
         buffer.append("<div class='comment-body-content'>")
         buffer.increaseIndent()
         appendCommentBodyContentTags(buffer, comment)
         appendCommentBodyContentDescription(buffer, comment)
         buffer.decreaseIndent()
         buffer.append("</div>")
-    }
-
-    private fun isCommentWithoutContent(comment: ReviewComment): Boolean {
-        val tags = comment.details.tags
-        val description = comment.details.description
-        return tags.isEmpty() && description.isBlank()
     }
 
     private fun appendCommentBodyContentTags(
