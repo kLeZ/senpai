@@ -10,7 +10,7 @@ class GenericTemplateEngine(templateMode: TemplateMode?) {
 	private val templateEngine: TemplateEngine = TemplateEngine()
 
 	init {
-		val templateResolver = ClassLoaderTemplateResolver(Thread.currentThread().contextClassLoader)
+		val templateResolver = ClassLoaderTemplateResolver(this.javaClass.classLoader)
 		templateResolver.templateMode = templateMode
 		templateResolver.prefix = "/"
 		templateResolver.cacheTTLMs = 3600000L // one hour
