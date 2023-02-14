@@ -10,22 +10,33 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package me.klez.senpai.report.html.node
+package me.klez.senpai.report.html
 
-import me.klez.senpai.report.html.HtmlBuffer
+import org.thymeleaf.TemplateEngine
+import org.thymeleaf.context.Context
+import org.thymeleaf.templatemode.TemplateMode
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
-class Body : HtmlNode() {
-	override fun openTag(buffer: HtmlBuffer) {
-		buffer.append("<body>")
-		buffer.increaseIndent()
-		buffer.append("<div class='layout'>")
-		buffer.increaseIndent()
+
+class GenericTemplateEngine(templateMode: TemplateMode?) {
+	private val templateEngine: TemplateEngine = TemplateEngine()
+
+	init {
+		val templateResolver = ClassLoaderTemplateResolver(this.javaClass.classLoader)
+		templateResolver.templateMode = templateMode
+		templateResolver.prefix = "/"
+		templateResolver.cacheTTLMs = 3600000L // one hour
+		templateResolver.isCacheable = true
+		templateEngine.setTemplateResolver(templateResolver)
 	}
 
-	override fun closeTag(buffer: HtmlBuffer) {
-		buffer.decreaseIndent()
-		buffer.append("</div>")
-		buffer.decreaseIndent()
-		buffer.append("</body>")
+	fun getTemplate(templateName: String?, parameters: Map<String?, Any?>?): String {
+		val ctx = Context()
+		parameters?.forEach { (k: String?, v: Any?) -> ctx.setVariable(k, v) }
+		ctx.setVariable("now", DateTimeFormatter.RFC_1123_DATE_TIME.format(ZonedDateTime.now(ZoneOffset.UTC)))
+		return templateEngine.process(templateName, ctx).trim { it <= ' ' }
 	}
 }
