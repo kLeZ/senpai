@@ -1,0 +1,143 @@
+<!--
+  ~ Project senpai, 2023-02-14T16:36+0100
+  ~
+  ~ Copyright 2023-2023 Alessandro 'kLeZ' Accardo
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Senpai - Code Reviews</title>
+	<link href="assets/css/badges.css" rel="stylesheet" />
+	<link href="assets/css/fonts.css" rel="stylesheet" />
+	<link href="assets/css/prism.css" rel="stylesheet" />
+	<link href="assets/css/style.css" rel="stylesheet" />
+	<link href="assets/img/favicon/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+	<link href="assets/img/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+	<link href="assets/img/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+	<link href="assets/img/favicon/site.webmanifest" rel="manifest">
+	<link color="#65828a" href="assets/img/favicon/safari-pinned-tab.svg" rel="mask-icon">
+	<link href="assets/img/favicon/favicon.ico" rel="shortcut icon">
+	<meta content="Senpai" name="apple-mobile-web-app-title">
+	<meta content="Senpai" name="application-name">
+	<meta content="#da532c" name="msapplication-TileColor">
+	<meta content="assets/img/favicon/browserconfig.xml" name="msapplication-config">
+	<meta content="#ffffff" name="theme-color">
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+<div class="layout">
+	<div class="comments-panel">
+		<div class="comments-panel-header">
+			<div class="comments-panel-header-title" th:text="${#strings.capitalize(review.details.evaluationName)}">Code review template</div>
+			<div class="comments-panel-header-details">
+				<div class="comments-panel-header-details-reviewer" th:text="${review.details.reviewer}">Adam Douglas</div>
+				<div class="comments-panel-header-details-team-number" th:text="'Team #' + ${#numbers.formatInteger(review.details.teamNumber, 2)}">Team #42</div>
+			</div>
+		</div>
+		<div class="general-comments" th:unless="${#lists.isEmpty(review.generalComments)}">
+			<div class="general-comments-title">General Comments</div>
+			<div class="general-comments-content">
+				<div class="senpai-comment general-comment" data-key="-1268113846-0" th:data-key="${comment.hashCode()} + '-' + ${status.index}" th:each="comment,status : ${review.sortedGeneralComments()}">
+					<div class="comment-header">
+						<img alt="comment logo: is a lotus" class="comment-header-logo" src="assets/img/lotus.png" />
+						<div class="comment-header-label" th:text="${comment.details.label}">This is a label</div>
+					</div>
+					<div class="comment-body">
+						<div class="comment-body-content" th:unless="${comment.empty}">
+							<div class="comment-body-content-tags" th:unless="${comment.details.tags.isEmpty()}">
+								<span class="badge" th:attrappend="class=${' ' + #strings.replace(#strings.toLowerCase(tag.value), ' ', '-')}" th:each="tag : ${comment.details.tags}" th:text="${tag.value}">Default tag</span>
+							</div>
+							<div class="comment-body-content-description" th:text="${comment.details.description}" th:unless="${comment.details.description.isBlank()}">
+								This is a general comment.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="files-comments" th:unless="${#maps.isEmpty(review.filesComments)}">
+			<div class="files-comments-title">Specific Comments</div>
+			<div class="files-comments-content">
+				<details class="file-comments" data-key="/pom.xml" th:data-key="${entry.key}" th:each="entry,status : ${review.sortedFilesComments()}">
+					<summary class="file-comments-summary" th:text="${entry.key}">/pom.xml</summary>
+					<div class="file-comments-details">
+						<div class="senpai-comment file-comment" data-key="-41637139-0" th:data-key="${comment.hashCode()} + '-' + ${status.index}" th:each="comment,status : ${entry.value}">
+							<div class="comment-header">
+								<img alt="comment logo: is a lotus" class="comment-header-logo" src="assets/img/lotus.png" />
+								<div class="comment-header-label" th:text="|Line ${comment.highlightStartingLine} - ${comment.details.label}|">
+									Line 7 - [N03] - Use Standard Nomenclature Where Possible
+								</div>
+							</div>
+							<div class="comment-body">
+								<div class="comment-body-content" th:unless="${comment.empty}">
+									<div class="comment-body-content-tags" th:unless="${comment.details.tags.isEmpty()}">
+										<span class="badge" th:attrappend="class=${' ' + #strings.replace(#strings.toLowerCase(tag.value), ' ', '-')}" th:each="tag : ${comment.details.tags}" th:text="${tag.value}">Default tag</span>
+									</div>
+									<div class="comment-body-content-description" th:text="${comment.details.description}" th:unless="${comment.details.description.isBlank()}">
+										This is a file comment.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</details>
+			</div>
+		</div>
+		<div class="copyright">
+			Generated with <b>&nbsp;&copy; Senpai - Code Reviews&nbsp;</b> on [[${now}]]
+		</div>
+	</div>
+	<div class="snippets-panel">
+		<div class="snippets-panel-empty-state-layout">
+			<div class="snippets-panel-empty-state">
+				<img alt="senpai logo: this is a red block with the text 'senpai' written inside it" class="snippets-panel-empty-state-image" src="assets/img/senpai.svg" />
+				<div class="snippets-panel-empty-state-quote">
+					Notice Me Senpai.
+				</div>
+				<div class="snippets-panel-empty-state-quote-author">
+					- People on deviantArt -
+				</div>
+			</div>
+		</div>
+		<div class="snippets">
+			<!--/*/ <th:block th:each="entry,status : ${review.sortedFilesComments()}"> /*/-->
+			<div class="snippet" data-key="-41637139-0" th:data-key="${comment.hashCode()} + '-' + ${status.index}" th:each="comment,status : ${entry.value}">
+				<pre class="line-numbers" data-line="7-7" data-start="1" style="white-space:pre-wrap;" th:data-line="${comment.highlightStartingLine} + '-' + ${comment.highlightEndingLine}" th:data-start="${comment.startingLine}">
+					<code class="language-xml" th:class="'language-' + ${comment.brush}" th:text="${comment.codeSnippet}">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+	&lt;groupId&gt;ofmgreen&lt;/groupId&gt;
+	&lt;artifactId&gt;ofmgreen&lt;/artifactId&gt;
+	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;packaging&gt;war&lt;/packaging&gt;
+	&lt;name&gt;ofmgreen&lt;/name&gt;
+	&lt;description&gt;web app per il calcolo degli impatti ambientali dei servizi di manutenzione&lt;/description&gt;
+
+	&lt;properties&gt;
+		&lt;java.version&gt;1.8&lt;/java.version&gt;
+        &lt;springframework.version&gt;5.3.6&lt;/springframework.version&gt;
+        &lt;hibernate.version&gt;5.4.29.Final&lt;/hibernate.version&gt;
+					</code>
+				</pre>
+			</div>
+			<!--/*/ </th:block> /*/-->
+		</div>
+	</div>
+</div>
+</body>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/clipboard.min.js"></script>
+<script src="assets/js/prism.js"></script>
+<script src="assets/js/comments.js"></script>
+<script src="assets/js/snippets.js"></script>
+</html>
