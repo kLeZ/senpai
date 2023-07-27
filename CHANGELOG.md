@@ -5,6 +5,7 @@
 - Updated support for IntelliJ Platform 232.*
 - Fixed CHANGELOG.md to add changes the previous release didn't cover because of errors in CI/CD
 - Fixed the build of version 1.2.1 which returned a _simple_ `System.IO.IOException: No space left on device` while running in the GitHub Actions VM
+- Added Free Disk Space job to build workflow to help with _No space left on device_
 
 ## [1.2.0] - 2023-07-26
 
@@ -78,7 +79,7 @@
 
 [Unreleased]: https://github.com/kLeZ/senpai/compare/v1.2.0...HEAD
 
-[1.2.0]: https://github.com/kLeZ/senpai/compare/v1.1.0...HEAD
+[1.2.0]: https://github.com/kLeZ/senpai/compare/v1.1.0...v1.2.0
 
 [1.1.0]: https://github.com/kLeZ/senpai/compare/v1.0.0...v1.1.0
 
